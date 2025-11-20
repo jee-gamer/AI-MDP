@@ -65,7 +65,10 @@ class ValueIterationAgent(ValueEstimationAgent):
         Hint: You should update self.values after end of each iteration .
         """
         for i in self.iterations:
-
+            "*** YOUR CODE HERE ***"
+            newValues = util.Counter()
+            for state in self.mdp.getStates():
+                # calculate
             pass
 
 
@@ -84,7 +87,13 @@ class ValueIterationAgent(ValueEstimationAgent):
         "*** YOUR CODE HERE ***"
         #Hint: should use self.mdp.getTransitionStatesAndProbs function here
         nextState_and_prob_pair = self.mdp.getTransitionStatesAndProbs(state, action)
-        util.raiseNotDefined()
+        qValue = 0
+        for nextState, prob in nextState_and_prob_pair:
+            reward = prob * (self.mdp.getReward(state, action ,nextState) + self.discount * self.values[nextState])
+            qValue += reward
+
+        # This is a weighted sum because you already times the probability in the reward
+        return qValue
 
     def computeActionFromValues(self, state):
         """
@@ -101,10 +110,15 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         if self.mdp.isTerminal(state):
             return None
-        direction = self.mdp.getPossibleActions(state)
+        bestAction = None
+        bestReward = -float('inf')
+        for action in self.mdp.getPossibleActions(state):
+            reward = self.computeQValueFromValues(state, action)
+            if reward > bestReward:
+                bestReward = reward
+                bestAction = action
 
-        # how do I choose direction?
-        util.raiseNotDefined()
+        return bestAction
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)

@@ -117,6 +117,10 @@ class Gridworld(mdp.MarkovDecisionProcess):
         representing the states reachable
         from 'state' by taking 'action' along
         with their transition probabilities.
+
+        Because the action we choose doesn't have 100% probability sometimes
+        so it will give a list of all possible action that the agent might do
+        with the probability of that action
         """
 
         if action not in self.getPossibleActions(state):
