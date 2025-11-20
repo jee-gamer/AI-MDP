@@ -64,12 +64,18 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         Hint: You should update self.values after end of each iteration .
         """
-        for i in self.iterations:
+        for i in range(self.iterations):
             "*** YOUR CODE HERE ***"
             newValues = util.Counter()
             for state in self.mdp.getStates():
-                # calculate
-            pass
+                if self.mdp.isTerminal(state):  # if it looped to terminal state just ignore it by setting value to 0
+                    newValues[state] = 0
+                else:
+                    qValues = []
+                    for action in self.mdp.getPossibleActions(state):
+                        qValues.append(self.getQValue(state, action))
+                    newValues[state] = max(qValues)
+            self.values = newValues
 
 
     def getValue(self, state):
